@@ -1,6 +1,7 @@
 package com.example.recipeapp
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.aspectRatio
@@ -24,23 +25,24 @@ import coil.compose.rememberAsyncImagePainter
 
 @Composable
 fun RecipeScreen(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    viewstate: MainViewModel.RecipeState,
+    navigateToDetail: (Category) -> Unit
 ) {
     val recipeViewModel: MainViewModel = viewModel()
-    val viewState by recipeViewModel.categoriesState
 
     Box(
         modifier = Modifier.fillMaxSize()
     ) {
         when {
-            viewState.loading ->{
+            viewstate.loading ->{
                 CircularProgressIndicator(modifier.align(Alignment.Center))
             }
-            viewState.error != null ->{
+            viewstate.error != null ->{
                 Text(text = "ERROR OCCURRED")
             }
             else ->{
-                CategoryScreen(categories = viewState.list)
+                CategoryScreen(categories = viewstate.list, navigateToDetail)
             }
         }
     }
@@ -48,7 +50,8 @@ fun RecipeScreen(
 
 @Composable
 fun CategoryScreen(
-    categories: List<Category>
+    categories: List<Category>,
+    navigateToDetail: (Category) -> Unit
 ) {
     LazyVerticalGrid(
         GridCells.Fixed(2),
@@ -57,7 +60,7 @@ fun CategoryScreen(
     ) {
         items(categories) {
             category ->
-            CategoryItem(category = category)
+            CategoryItem(category = category, navigateToDetail)
         }
     }
 }
@@ -65,12 +68,14 @@ fun CategoryScreen(
 //How each Item Looks like
 @Composable
 fun CategoryItem(
-    category: Category
+    category: Category,
+    navigateToDetail: (Category) -> Unit
 ) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable { navigateToDetail(category) },
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
