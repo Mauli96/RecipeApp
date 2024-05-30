@@ -10,11 +10,11 @@ import androidx.navigation.compose.composable
 @Composable
 fun RecipeApp(navController: NavHostController) {
     val recipeViewModel: MainViewModel = viewModel()
-    val viewstate by recipeViewModel.categoriesState
+    val viewState by recipeViewModel.categoriesState
 
     NavHost(navController = navController, startDestination = Screen.RecipeScreen.route) {
         composable(route = Screen.RecipeScreen.route) {
-            RecipeScreen(viewstate = viewstate, navigateToDetail = {
+            RecipeScreen(viewState = viewState, navigateToDetail = {
                 navController.currentBackStackEntry?.savedStateHandle?.set("cat", it)
                 navController.navigate(Screen.DetailScreen.route)
             })
