@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class MainViewModel : ViewModel() {
+class MainViewModel: ViewModel() {
 
     private val _categoriesState = mutableStateOf(RecipeState())
     val categoriesState: State<RecipeState> = _categoriesState
